@@ -1,0 +1,36 @@
+{
+  "name": "Nextjs-Github",
+  "version": "1.0.0",
+  "description": "Nextjs构建的服务端渲染项目-Github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Duanzihuang/Nextjs-Github.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Duanzihuang/Nextjs-Github/issues"
+  },
+  "homepage": "https://github.com/Duanzihuang/Nextjs-Github#readme",
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "antd": "^3.19.4",
+    "ioredis": "^4.10.0",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.12.0"
+  }
+}
