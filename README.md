@@ -78,7 +78,8 @@ ioredis
 	path?id=xxx
 	
 	新页面如何获取参数
-		withRouter包裹组件导出，那么在组件的props中就可以拿到router对象，通过router对象的query属性		可以获取到值 router.query.xxx
+		withRouter包裹组件导出，那么在组件的props中就可以拿到router对象，通过router对象的query属
+		可以获取到值 router.query.xxx
 		import {withRouter} from 'next/router'
 		
 路由映射
@@ -96,5 +97,112 @@ ioredis
 404处理
 	当使用Link的as映射之后，发现强制刷新会报404的错误，这是因为我们的pages目录下，并没有
 	该页面，所以会报错，解决办法是：自己在后台【server.js中】实现对路径的处理
+	
+Router钩子
+	routeChangeStart
+	routeChangeComplete
+	routeChangeError
+	beforeHistoryChange
+	hashChangeStart
+	hashChangeComplete
 ```
+
+### getInitialProps
+
+```
+挂在`页面`上面的静态方法，nextjs的数据获取规范
+
+作用：【完成客户端与服务端数据的同步】
+	在页面中获取数据
+	
+	在App中获取全局数据
+	
+注意：
+	只有pages目录下面的才起作用，其它文件夹下的不起作用
+```
+
+### 自定义App
+
+```
+相当于nuxt中的模板
+
+作用：
+	固定Layout
+	保持一些公用的状态
+		redux
+		
+	给页面传入一些自定义数据
+	自定义错误处理
+	
+步骤：
+	1、在pages目录下，创建一个_page.js的文件
+	2、在 _app.js 中写了getInitialProps一定要注意，要获取页面的数据，并且在render中传递给页面
+```
+
+### 自定义Document
+
+```
+要点：
+	1、只有在服务端渲染的时候才会被调用
+	2、用来修改服务端渲染的文档内容
+	3、一般用来配合第三方css-in-js方案使用
+	
+步骤：
+	1、在 pages 目录下创建 _document.js
+	2、导入相应的模块，重写Document的render 和 getInitialProps 方法
+```
+
+### 定义样式
+
+```
+https://github.com/zeit/styled-jsx
+
+要点：
+	next中不支持直接导入css，需要借助于第三方包 @zeit/next-css
+	但是支持 css-in-js 的方式【style jsx】
+	
+语法：
+	私有样式
+        <style jsx>{`
+            内容
+        `}</style>
+
+        注：样式是私有的
+        
+     全局样式
+     	<style jsx global>{`
+            内容
+        `}</style>
+
+        注：样式是全局的
+        
+注意：
+	当页面销毁了，它的样式也会从head中移除，所以全局的样式如果写在某个页面中，当某个页面销毁了
+	全局的样式也就没有啦，这个是比较好的样式会随着页面的出现而出现，销毁而销毁
+```
+
+### styled-component
+
+```
+https://www.styled-components.com/docs/advanced#nextjs
+
+步骤：
+	1、安装必要的包 styled-components babel-plugin-styled-components
+	2、在 .babelrc 中配置 styled-components
+	3、在 _document.js 中写好对应的代码
+```
+
+### LazyLoading
+
+```
+第三方包的懒加载
+	在页面的 getInitialProps 中通过 import('包名') 进行懒加载
+		const moment = await import('moment')
+		
+懒加载组件
+	import dynamic from 'next/dynamic'
+	const LazyLoad = dynamic(import('../components/LazyLoad'))
+```
+
+### next.config.js
 
