@@ -206,3 +206,61 @@ https://www.styled-components.com/docs/advanced#nextjs
 
 ### next.config.js
 
+```
+env
+	环境变量
+	
+serverRuntimeConfig
+	服务端渲染配置，只有在服务端渲染才能获取到的配置
+	
+publicRuntimeConfig
+	服务端和客户端渲染都可以获取的配置
+```
+
+### Hooks
+
+```
+作用：
+	让函数组件具有类组件的能力
+	
+用法：
+	useState 给模型赋初始值
+		// 赋初始值 count = 0
+		const [count,setCount] = useState(0)
+		
+	useEffect 页面渲染完毕之后，会执行它的回调函数
+		
+		// 组件渲染完毕之后，调用该回调函数
+		useEffect(() => {
+            const interval = setInterval(() => {
+                setCount(c => c + 2)
+            },1000)
+			
+			// 组件销毁时候执行
+            return () => clearInterval(interval)
+        },[])
+        
+    useReducer 使用跟redux很像
+    	见代码
+    	const [count,dispatchCount] = useReducer(countReducer,0)
+    	<button onClick={() => {dispatchCount({type:'add'})}}>{count}</button>
+    
+    useContext Context的hooks
+    	见代码
+    
+    useRef ref的hooks
+    	见代码
+    	const inputRef = useRef()
+    	<input ref={inputRef}/>
+```
+
+### Hooks优化
+
+```
+1、使用mome 把子组件包裹起来
+
+2、把父组件中要传递给子组件的模型，使用useMemo包裹起来
+
+3、在父组件中将传递给子组件的函数，使用useCallback包裹起来
+```
+
