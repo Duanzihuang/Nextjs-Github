@@ -207,14 +207,20 @@ https://www.styled-components.com/docs/advanced#nextjs
 ### next.config.js
 
 ```
-env
-	环境变量
+配置的内容：
+    env
+        环境变量
+
+    serverRuntimeConfig
+        服务端渲染配置，只有在服务端渲染才能获取到的配置
+
+    publicRuntimeConfig
+        服务端和客户端渲染都可以获取的配置
 	
-serverRuntimeConfig
-	服务端渲染配置，只有在服务端渲染才能获取到的配置
-	
-publicRuntimeConfig
-	服务端和客户端渲染都可以获取的配置
+获取next.config.js中配置的内容
+	import getConfig from 'next/config'
+
+	const {publicRuntimeConfig} = getConfig()
 ```
 
 ### Hooks
@@ -262,5 +268,51 @@ publicRuntimeConfig
 2、把父组件中要传递给子组件的模型，使用useMemo包裹起来
 
 3、在父组件中将传递给子组件的函数，使用useCallback包裹起来
+```
+
+Github Oauth授权
+
+> 授权步骤：<https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/>
+
+```
+步骤：
+	1、拿着 client_id scope 等请求 code【GET请求】
+		https://github.com/login/oauth/authorize?client_id=xxx&scope=user,repo
+	
+	2、拿着 client_id client_secret code 请求access_token【POST请求】
+		https://github.com/login/oauth/access_token
+		
+	3、拿着 access_token 请求具体API，比如获取用户信息【请求头中传递】
+		请求头格式  Authorization : token xxxx
+		
+保证安全的策略
+	1、一次性code
+	2、id + secret
+	3、redirect_uri
+```
+
+### nuxt中使用redis存储session信息
+
+```
+步骤:
+	1、在项目根目录下创建一个文件
+		server/session-store.js
+		
+	2、在session-store中创建一个类RedisSessionStore，并且导出
+		class RedisSessionStore {
+            constructor(){...}
+            async get(sid){...}
+            async set(sid,sess,time){...}
+            async destory(sid){...}
+		}
+		export default RedisSessionStore
+		
+	3、在 入口 文件server.js中导入并且设置给 koa-session
+		const SESSION_CONFIG = {
+            key:'jid', // 浏览器cookies的key
+            store:new RedisSessionStore(redis)
+        }
+
+        server.use(session(SESSION_CONFIG,server))
 ```
 
