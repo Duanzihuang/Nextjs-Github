@@ -316,3 +316,17 @@ Github Oauth授权
         server.use(session(SESSION_CONFIG,server))
 ```
 
+### Hoc
+
+```
+NextJS 通过Hoc 实现给组件添加额外的功能
+
+定义：
+	接收组件作为参数并返回新的组件
+
+原理：
+	传入一个组件，经过处理之后返回一个新的组件，该组件除了有之前组件的所有props还可以有额外的props
+	例如 router-router-dom 的 withRouter  
+    	react-redux 的 connect
+```
+

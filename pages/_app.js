@@ -9,6 +9,14 @@ import Layout from '../components/Layout'
 // 导入MyContext
 import MyContext from '../lib/my-context'
 
+// import store from '../store'
+import {Provider} from 'react-redux'
+
+// 测试TestHoc
+// import TestHoc from '../lib/test-hoc'
+
+import ReduxHoc from '../lib/redux-hoc'
+
 class MyApp extends App {
     state = {
         context:'val'
@@ -19,8 +27,9 @@ class MyApp extends App {
     /* 如果重写了该方法，需要先调用页面的getInitialProps，拿到结果，然后在
         render函数中渲染该页面的时候，作为参数传递进去
     */
-    static async getInitialProps({Component,ctx}){
+    static async getInitialProps(ctx){
         console.log('app init')
+        const {Component} = ctx
         let pageProps
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx)
@@ -32,19 +41,23 @@ class MyApp extends App {
 
     render(){
         // Component 就是每个pages下面的每个页面
-        const {Component,pageProps} = this.props
+        const {Component,pageProps,reduxStore} = this.props
         // console.log(Component)
         return (
             <Container>
                 <Layout>
-                    <MyContext.Provider value={this.state.context}>
-                        <Component {...pageProps}></Component>
-                        <button onClick={() => {this.setState({context:`${this.state.context} 111`})}}>update context</button>
-                    </MyContext.Provider>
+                    {/* <Provider store={store}> */}
+                    <Provider store={reduxStore}>
+                        <MyContext.Provider value={this.state.context}>
+                            <Component {...pageProps}></Component>
+                            <button onClick={() => {this.setState({context:`${this.state.context} 111`})}}>update context</button>
+                        </MyContext.Provider>
+                    </Provider>
                 </Layout>
             </Container>
         )
     }
 }
 
-export default MyApp
+// export default TestHoc(MyApp)
+export default ReduxHoc(MyApp)
