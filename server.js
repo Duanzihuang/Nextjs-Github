@@ -84,8 +84,10 @@ app.prepare().then(() => {
     server.use(router.routes())
     let index = 0
     server.use(async (ctx,next) => {
-        ctx.cookies.set('id',index)
-        index += 1
+        // ctx.cookies.set('id',index)
+        // index += 1
+        ctx.req.session = ctx.session
+        
         await handle(ctx.req,ctx.res)
         ctx.respond = false
     })

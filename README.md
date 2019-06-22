@@ -330,3 +330,18 @@ NextJS 通过Hoc 实现给组件添加额外的功能
     	react-redux 的 connect
 ```
 
+### Hoc之后的代码执行顺序及注意事项
+
+```
+1、浏览器输入 http://localhost:3000/
+
+2、会来到服务端的 server.js 中
+	记得在服务端的处理中，加上 ctx.req.session = ctx.session 这样后面在渲染的时候才能拿到ctx.req.session做处理
+	
+3、会来到 Hoc 的 getInitialProps 中，在这里可以根据session数据创建store，并且将来把store传递到_app中
+
+4、会来到 _app 的 getInitialProps 中，在这里可以做处理
+
+5、如果页面实现了getInitialProps，接下来就会执行页面的getInitialProps方法了
+```
+

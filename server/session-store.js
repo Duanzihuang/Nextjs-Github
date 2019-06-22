@@ -9,7 +9,7 @@ class RedisSessionStore {
 
   // 根据 sid 从session中获取内容
   async get(sid) {
-    console.log(`get session is ${sid}`)
+    // console.log(`get session is ${sid}`)
     const id = getRedisSessionId(sid)
     const result = await this.client.get(id)
     try {
@@ -21,7 +21,7 @@ class RedisSessionStore {
 
   // 根据 sid 往session中设置内容
   async set(sid, sess, time) {
-    console.log(`set session is ${sid}`)
+    // console.log(`set session is ${sid}`)
     const id = getRedisSessionId(sid)
 
     if (typeof time === 'number') {
@@ -42,7 +42,7 @@ class RedisSessionStore {
 
   // 从reids当中删除某个session
   async destroy(sid){
-    console.log(`destroy session is ${sid}`)
+    // console.log(`destroy session is ${sid}`)
     const id = getRedisSessionId(sid)
 
     await this.client.del(id)

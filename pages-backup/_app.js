@@ -6,8 +6,14 @@ import 'antd/dist/antd.css'
 // 导入Layout组件
 import Layout from '../components/Layout'
 
+// 导入MyContext
+import MyContext from '../lib/my-context'
+
 // import store from '../store'
 import {Provider} from 'react-redux'
+
+// 测试TestHoc
+// import TestHoc from '../lib/test-hoc'
 
 import ReduxHoc from '../lib/redux-hoc'
 
@@ -39,14 +45,19 @@ class MyApp extends App {
         // console.log(Component)
         return (
             <Container>
-                <Provider store={reduxStore}>
-                    <Layout>
-                        <Component {...pageProps}></Component>
-                    </Layout>
-                </Provider>
+                <Layout>
+                    {/* <Provider store={store}> */}
+                    <Provider store={reduxStore}>
+                        <MyContext.Provider value={this.state.context}>
+                            <Component {...pageProps}></Component>
+                            <button onClick={() => {this.setState({context:`${this.state.context} 111`})}}>update context</button>
+                        </MyContext.Provider>
+                    </Provider>
+                </Layout>
             </Container>
         )
     }
 }
 
+// export default TestHoc(MyApp)
 export default ReduxHoc(MyApp)
