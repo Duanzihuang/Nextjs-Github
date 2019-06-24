@@ -119,6 +119,11 @@ Router钩子
 	
 注意：
 	只有pages目录下面的才起作用，其它文件夹下的不起作用
+	
+页面中的 getInitialProps 说明
+	1、一进入页面，比如 Index 会执行Index.getInitialProps 但是此时走的是服务端渲染
+	
+	2、通过路由切换进入到Index页面，走的时候浏览器端渲染
 ```
 
 ### 自定义App
@@ -234,7 +239,7 @@ https://www.styled-components.com/docs/advanced#nextjs
 		// 赋初始值 count = 0
 		const [count,setCount] = useState(0)
 		
-	useEffect 页面渲染完毕之后，会执行它的回调函数
+	useEffect 页面渲染完毕之后(类似于mounted)，会执行它的回调函数【只执行一次】
 		
 		// 组件渲染完毕之后，调用该回调函数
 		useEffect(() => {
@@ -343,5 +348,11 @@ NextJS 通过Hoc 实现给组件添加额外的功能
 4、会来到 _app 的 getInitialProps 中，在这里可以做处理
 
 5、如果页面实现了getInitialProps，接下来就会执行页面的getInitialProps方法了
+```
+
+### lur-cache
+
+```
+lur-cache 可以实现缓存策略
 ```
 

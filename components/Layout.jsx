@@ -1,6 +1,7 @@
 import { Layout , Icon, Input, Avatar,Tooltip,Dropdown ,Menu} from 'antd'
 import {connect} from 'react-redux'
 import {useState,useCallback} from 'react'
+import Link from 'next/link'
 
 const { Header, Content, Footer } = Layout
 
@@ -25,15 +26,19 @@ import {logoutActionCreator} from '../store/actions/actionCreator'
 // const Comp1 = ({color,children,style}) => <div style={{color,...style}}>{children}</div>
 
 const MyLayout = ({children,user,logout,router}) => {
+  // 获取浏览器 query 中的值
+  const urlQuery = router.query && router.query.query
 
   // 给无状态组件设置state
-  const [search,setSearch] = useState('')
+  const [search,setSearch] = useState(urlQuery || '')
 
   const handleSearchChange = useCallback((e) => {
     setSearch(e.target.value)
   },[setSearch])
 
-  const handleOnSearch = () => {}
+  const handleOnSearch = useCallback(() => {
+    router.push(`/search?query=${search}`)
+  },[search]) // 依赖谁，就把谁写在数组中
 
   // 退出
   const userLogout = useCallback(()=>{
@@ -53,7 +58,9 @@ const MyLayout = ({children,user,logout,router}) => {
         <div className="header-inner">
           <div className="header-left">
             <div className="logo">
-              <Icon type="github" style={githubStyle} />
+              <Link href="/">
+                <Icon type="github" style={githubStyle} />
+              </Link>
             </div>
             <div><Input.Search value={search} onChange={handleSearchChange} onSearch={handleOnSearch} placeholder="搜索仓库" /></div>
           </div>
@@ -121,7 +128,10 @@ const MyLayout = ({children,user,logout,router}) => {
         .ant-layout-header{
           padding-left:0;
           padding-right:0;
-        }  
+        }
+        .ant-layout-content{
+          background:#fff;
+        }
       `}</style>
     </Layout>
   )

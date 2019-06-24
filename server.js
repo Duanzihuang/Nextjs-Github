@@ -16,6 +16,7 @@ const redis = new Redis()
 
 // 授权中间件
 const auth = require('./server/auth')
+const api = require('./server/api')
 
 // 等服务端ssr渲染完毕之后【编译好pages下面的所有页面】
 app.prepare().then(() => {
@@ -34,6 +35,9 @@ app.prepare().then(() => {
 
     // 处理授权中间件
     auth(server)
+
+    // 处理API中间件
+    api(server)
 
     // 处理 params的路径
     router.get('/a/:id',async ctx => {
@@ -86,10 +90,17 @@ app.prepare().then(() => {
     server.use(async (ctx,next) => {
         // ctx.cookies.set('id',index)
         // index += 1
+
+        // 一定要记得设置session，否则在进行服务端渲染的时候就拿不到了
         ctx.req.session = ctx.session
         
         await handle(ctx.req,ctx.res)
         ctx.respond = false
+    })
+
+    server.use(async (ctx, next) => {
+        ctx.res.statusCode = 200
+        await next()
     })
 
     server.listen(3000,() => {
