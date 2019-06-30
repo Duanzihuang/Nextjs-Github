@@ -1,8 +1,10 @@
 import {connect} from 'react-redux'
 import getConfig from 'next/config'
 import {Icon,Button,Tabs} from 'antd'
+import {cacheArray} from '../lib/repo-basic-cache'
+import Lru from 'lru-cache'
 const { TabPane } = Tabs
-import {useCallback} from 'react'
+import {useCallback,useEffect} from 'react'
 const api = require('../lib/api')
 
 const {publicRuntimeConfig} = getConfig()
@@ -10,7 +12,22 @@ const {publicRuntimeConfig} = getConfig()
 // 导入子组件
 import Repo from '../components/Repo'
 
+const isServer = typeof window === 'undefined'
+const cache = new Lru({
+    maxAge:1000 * 60 * 60
+})
+
 const Index = ({userRepos,userStaredRepos,user}) => {
+    useEffect(() => {
+        if (!isServer){
+            cache.set('userRepos',userRepos)
+            cache.set('userStaredRepos',userStaredRepos)
+
+            cacheArray(userRepos)
+            cacheArray(userStaredRepos)
+        }
+    })
+
     // 判断是否登录，如果没有登录，则登录
     if (!user || !user.id){
         return <div className="root">
@@ -106,6 +123,16 @@ Index.getInitialProps = async ({ctx,reduxStore}) => {
     if (!user || !user.id){
         return {
             isLogin:false
+        }
+    }
+
+    // 先从缓存中去取
+    if (!isServer){
+        if (cache.get('userRepos') && cache.get('userStaredRepos')){
+            return {
+                userRepos:cache.get('userRepos'),
+                userStaredRepos:cache.get('userStaredRepos')
+            }
         }
     }
 

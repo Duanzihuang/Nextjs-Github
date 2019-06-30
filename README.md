@@ -356,3 +356,35 @@ NextJS 通过Hoc 实现给组件添加额外的功能
 lur-cache 可以实现缓存策略
 ```
 
+### nextjs之report 导出静态页面
+
+```
+步骤：
+	1、生成项目 nextjs-report
+		npx create-next-app nextjs-report
+	
+	2、在package.json中配置 script 脚本
+		"report": "next report"
+		
+	3、先build在report
+		npm run build【必须先执行】
+		npm run report
+		
+	4、使用 http-server 运行 out 目录
+		如果没有 http-server 全局包，记得安装 
+			npm install http-server -g
+			
+		http-server out
+		
+	5、如果我们更改了url的格式，需要更改 next.config.js
+		repos?page=2 ===> repos/2
+		
+		exportPathMap: async defaultMap => {
+            return {
+              ...defaultMap,
+              '/repos/2':{page:'/repos',query:{page:2}},
+              '/repos/3':{page:'/repos',query:{page:3}}
+            }
+        }
+```
+

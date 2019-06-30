@@ -3,6 +3,7 @@ import {withRouter} from 'next/router'
 import api from '../lib/api'
 import {Row,Col,List,Pagination} from 'antd'
 import Repo from '../components/Repo'
+import {cacheArray} from '../lib/repo-basic-cache'
 
 import Link from 'next/link'
 
@@ -58,10 +59,17 @@ const selectedItemStyle = {
 
 function noop() {}
 
+const isServer = typeof window === 'undefined'
+
 function Search({router,repos}){
     // console.log(router.query)
     const {...query} = router.query
     const {lang,sort,order,page} = router.query
+
+    // 缓存数据
+    if (!isServer){
+        cacheArray(repos.items)
+    }
 
     return <div className="root">
         <Row gutter={20}>
