@@ -14,6 +14,11 @@ const Redis = require('ioredis')
 
 const redis = new Redis()
 
+const atob = require('atob')
+
+// 设置nodejs全局增加一个atob方法
+global.atob = atob
+
 // 授权中间件
 const auth = require('./server/auth')
 const api = require('./server/api')

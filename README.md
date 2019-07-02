@@ -350,13 +350,23 @@ NextJS 通过Hoc 实现给组件添加额外的功能
 5、如果页面实现了getInitialProps，接下来就会执行页面的getInitialProps方法了
 ```
 
-### lur-cache
+### lru-cache
 
 ```
-lur-cache 可以实现缓存策略
+lru-cache 可以实现缓存策略
+
+https://www.npmjs.com/package/lru-cache
 ```
 
-### nextjs之report 导出静态页面
+### Markdown 转换成 html
+
+```
+markdown-it
+
+https://www.npmjs.com/package/markdown-it
+```
+
+### nextjs之 export 导出静态页面
 
 ```
 步骤：
